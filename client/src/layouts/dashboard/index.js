@@ -43,22 +43,38 @@ function Dashboard() {
     });
   };
 
-  // file handling
-  const handlingFileUpload = (e) => {
-    const { files } = e.target;
-    setData([]);
+  // file handling         29/11/2023
+  // const handlingFileUpload = (e) => {
+  //   const { files } = e.target;
+  //   setData([]);
     // console.log(files);
     // console.log(files[0]);
-    papa.parse(files[0], {
-      header: true,
-      column: true,
-      complete(results) {
-        setData((existing) => [...existing, ...results.data]);
-        return results.data;
-      },
-    });
-    disable?setDisable(!disable):null
-  };
+  //   papa.parse(files[0], {
+  //     header: true,
+  //     column: true,
+  //     complete(results) {
+  //       setData((existing) => [...existing, ...results.data]);
+  //       return results.data;
+  //     },
+  //   });
+  //   disable?setDisable(!disable):null
+  // };
+  
+  // file handling
+const handlingFileUpload = (e) => {
+  const { files } = e.target;
+  setData([]);
+  papa.parse(files[0], {
+    header: true,
+    column: true,
+    complete(results) {
+      setData((existing) => [...existing, ...results.data]);
+      return results.data;
+    },
+  });
+  setDisable(!disable); // Updated this line
+};
+
 
   // Upload Data
   const handleSubmit = (e) => {
