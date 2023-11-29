@@ -6,9 +6,6 @@ This tool help to find the AWS time using external extension
 
 ## Authors
 
-- [@Madhusudhanan Thangamani](https://www.github.com/madhuhari188)
-- [@Manikandan Maruthamuthu](https://www.github.com/maxmp717)
-
 
 ## Environment Variables
 
@@ -34,7 +31,7 @@ If you have any feedback, please reach out to us at team-developers@objectways.c
 Clone the project
 
 ```bash
-  git clone https://github.com/madhuhari188/Office_2.git
+
 ```
 
 Go to the project directory
