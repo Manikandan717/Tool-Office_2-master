@@ -118,6 +118,14 @@ const routes = [
     route: "/authentication/forget",
     component: <Forgotpwd />,
   },
+  //   {
+  //   type: "collapse",
+  //   name: "Attandance",
+  //   key: "Attandance",
+  //   icon: <Icon fontSize="small">table_view</Icon>,
+  //   route: "/Attandance",
+  //   component: <Attendance />,
+  // },
 ];
 
 export default routes;
