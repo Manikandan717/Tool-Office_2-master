@@ -20,31 +20,35 @@ import {ToastContainer,toast} from 'react-toastify';
 
 function Report() {
   // const { columns, rows } = authorsTableData();
-  const [count, setCount] = useState({ aTotal: "", hTotal: "", jTotal: "" });
+  // const [count, setCount] = useState({ aTotal: "", hTotal: "", jTotal: "" });
+  const [count, setCount] = useState({ aTotal: "" });
   const [bill, setBill] = useState({
     tDate: "",
     team: "",
-    batch: "",
     projectname: "",
+    batch: "",
     associated: {
       annotation: 0,
       qc: 0,
       pmsme: 0,
     },
-    hours: {
-      annotation: 0,
-      qc: 0,
-      pmsme: 0,
-      projecttraning: 0,
-      ojt: 0,
-      qualityannotator: 0,
-      idelhours: 0,
-      other: 0,
-      comments: "",
-    },
+    // hours: {
+    //   annotation: 0,
+    //   qc: 0,
+    //   pmsme: 0,
+    //   projecttraning: 0,
+    //   ojt: 0,
+    //   qualityannotator: 0,
+    //   idelhours: 0,
+    //   other: 0,
+    //   comments: "",
+    // },
     jobs: {
-      annotation: 0,
-      qc: 0,
+      // annotation: 0,
+      // qc: 0,
+      managerTeam: "",
+      status1: "",
+      cDate: "",
     },
   });
 
@@ -52,6 +56,8 @@ function Report() {
   const name = useSelector((state)=>state.auth.user.name)
 
   const [teamList, setTeamList] = useState(null);
+  // const [managerTeamList, setManagerTeamList] = useState(null);
+  // const [status, setStatus] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -60,56 +66,68 @@ function Report() {
       ...bill,
       [name]: value,
       team: teamList,
+      // managerTeam: managerTeamList,
+      // status1: status,
     });
   };
 
   const handleTeamChange = (event, value) => setTeamList(value);
+  // const handleMangerTeamChange = (event, value) => setManagerTeamList(value);
+  // const handleStatusChange = (event, value) => setStatus(value);
+  const handleManagerTeamChange = (event, value) => {
+    setBill({
+      ...bill,
+      jobs: {
+        ...bill.jobs,
+        managerTeam: event.target.value,
+      },
+    });
+  };
+
+  const handleStatusChange = (event) => {
+    setBill({
+      ...bill,
+      jobs: {
+        ...bill.jobs,
+        status1: event.target.value,
+      },
+    });
+  };
+
   useEffect(() => {
     var assTotal =
       bill.associated.annotation + bill.associated.qc + bill.associated.pmsme;
-    var hourTotal =
-      bill.hours.annotation +
-      bill.hours.qc +
-      bill.hours.pmsme +
-      bill.hours.projecttraning +
-      bill.hours.ojt +
-      bill.hours.qualityannotator +
-      bill.hours.idelhours +
-      bill.hours.other;
-    var jobTotal = bill.jobs.annotation + bill.jobs.qc;
+    // var hourTotal =
+    //   bill.hours.annotation +
+    //   bill.hours.qc +
+    //   bill.hours.pmsme +
+    //   bill.hours.projecttraning +
+    //   bill.hours.ojt +
+    //   bill.hours.qualityannotator +
+    //   bill.hours.idelhours +
+    //   bill.hours.other;
+    // var jobTotal = bill.jobs.annotation + bill.jobs.qc;
     setCount({
       ...count,
       aTotal: assTotal,
-      hTotal: hourTotal,
-      jTotal: jobTotal,
+      // hTotal: hourTotal,
+      // jTotal: jobTotal,
     });
   }, [bill]);
   const list = [
-    "Dumbledore",
-    "Gandalf",
-    "Honeydew_Image Classification",
-    "Longon",
-    "Mango_Autonomy",
-    "Mango_Obstacles",
-    "Mango_Soybeans",
-    "Neo Segmentation",
-    "Pomelo",
-    "Rambutan_Traffic Light",
-    "Rambutan_Traffic Sign",
-    "Snorlax_Vehicle",
-    "Venusaur",
-    "LIME",
-    "SNOMED",
-    "RX-NORM",
-    "Receipt Labeling",
-    "My Heritage Project",
-    "Dragon",
-    "SKY FFV",
-    "NALA 3",
-    "Napa",
-    "Pinfo",
-    "SWDP",
+    "CV",
+    "NLP",
+    "CM",
   ];
+  // const managerTeam = [
+  //   "naveen",
+  //   "kavin",
+  //   "Rajesh",
+  // ];
+  // const status1 = [
+  //   "Active",
+  //   "Completed",
+  // ];
   const submit = (e) => {
     e.preventDefault();
     const billData = {
@@ -125,22 +143,25 @@ function Report() {
         pm:bill.associated.pmsme,
         total:count.aTotal,
       },
-      hours:{
-        annotation:bill.hours.annotation,
-        qc:bill.hours.qc,
-        pm:bill.hours.pmsme,
-        training:bill.hours.projecttraning,
-        ojt:bill.hours.ojt,
-        qcFeedback:bill.hours.qualityannotator,
-        other:bill.hours.other,
-        idle:bill.hours.idelhours,
-        total:count.hTotal,
-        comments:bill.hours.comments
-      },
+      // hours:{
+      //   annotation:bill.hours.annotation,
+      //   qc:bill.hours.qc,
+      //   pm:bill.hours.pmsme,
+      //   training:bill.hours.projecttraning,
+      //   ojt:bill.hours.ojt,
+      //   qcFeedback:bill.hours.qualityannotator,
+      //   other:bill.hours.other,
+      //   idle:bill.hours.idelhours,
+      //   total:count.hTotal,
+      //   comments:bill.hours.comments
+      // },
       jobs:{
-        annotation:bill.jobs.annotation,
-        qc:bill.jobs.qc,
-        total:count.jTotal
+        // annotation:bill.jobs.annotation,
+        managerTeam:bill.jobs.managerTeam,
+        // qc:bill.jobs.qc,
+        status1:bill.jobs.status1,
+        cDate:bill.jobs.cDate,
+        // total:count.jTotal
       }
     }
     axios.post('/billing/new',billData)
@@ -166,7 +187,7 @@ function Report() {
               coloredShadow="info"
             >
               <MDTypography variant="h6" color="white">
-                Reports
+                Create Project
               </MDTypography>
             </MDBox>
             <MDBox pb={5} pt={6} px={4} display="flex">
@@ -178,7 +199,7 @@ function Report() {
               >
                 <Grid item xs={2} md={3}>
                   <MDTypography variant="h6" fontWeight="medium">
-                    Date
+                    Date *
                   </MDTypography>
                   <MDInput
                     type="date"
@@ -190,7 +211,7 @@ function Report() {
                 {/* </Grid> */}
                 <Grid item xs={2} md={3}>
                   <MDTypography variant="h6" fontWeight="medium">
-                    Team
+                    Team *
                   </MDTypography>
                   <Autocomplete
                     disablePortal
@@ -203,23 +224,23 @@ function Report() {
                 </Grid>
                 <Grid item xs={2} md={3}>
                   <MDTypography variant="h6" fontWeight="medium">
+                    Project Name *
+                  </MDTypography>
+                  <MDInput
+                    type="text"
+                    name="projectname"
+                    value={bill.projectname}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+                <Grid item xs={2} md={3}>
+                  <MDTypography variant="h6" fontWeight="medium">
                     Batch
                   </MDTypography>
                   <MDInput
                     type="text"
                     name="batch"
                     value={bill.batch}
-                    onChange={handleInputChange}
-                  />
-                </Grid>
-                <Grid item xs={2} md={3}>
-                  <MDTypography variant="h6" fontWeight="medium">
-                    Project Name
-                  </MDTypography>
-                  <MDInput
-                    type="text"
-                    name="projectname"
-                    value={bill.projectname}
                     onChange={handleInputChange}
                   />
                 </Grid>
@@ -252,7 +273,7 @@ function Report() {
               <Grid container spacing={1}>
                 <Grid item xs={2} md={3}>
                   <MDTypography variant="h6" fontWeight="medium">
-                    Annotation
+                    Annotation *
                   </MDTypography>
                   <MDInput
                     type="number"
@@ -329,7 +350,7 @@ function Report() {
                 </Grid>
               </Grid>
             </MDBox>
-            <MDBox
+            {/* <MDBox
               mx={2}
               // mt={-3}
               py={3}
@@ -530,7 +551,7 @@ function Report() {
                   />
                 </Grid>
               </Grid>
-            </MDBox>
+            </MDBox> */}
             <MDBox
               mx={2}
               // mt={-3}
@@ -543,7 +564,7 @@ function Report() {
               coloredShadow="info"
             >
               <MDTypography variant="h6" color="white">
-                Total Jobs Worked on
+                Assign To
               </MDTypography>
             </MDBox>
             <MDBox
@@ -556,9 +577,9 @@ function Report() {
               <Grid container spacing={2}>
                 <Grid item xs={2} md={3}>
                   <MDTypography variant="h6" fontWeight="medium">
-                    Annotation Batch
+                 Project Manager *
                   </MDTypography>
-                  <MDInput
+                  {/* <MDInput
                     type="number"
                     name="annotation"
                     value={bill.jobs.annotation}
@@ -571,13 +592,43 @@ function Report() {
                         },
                       })
                     }
-                  />
+                  /> */}
+                    
+                  {/* <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={managerTeam}
+                    onChange={handleMangerTeamChange}
+                    sx={{ width: 200 }}
+                    renderInput={(params) => <TextField {...params} />}
+                  /> */}
+                    <TextField
+              sx={{ width: 305 }}
+              select
+              fullWidth
+              name="managerTeam"
+              value={bill.jobs.managerTeam}
+              onChange={handleManagerTeamChange}
+              variant="outlined"
+              InputLabelProps={{ shrink: true }}
+              SelectProps={{
+                native: true,
+              }}
+            >
+              <option value="">Select Manager</option>
+              <option value="Balamurugan">Balamurugan</option>
+              <option value="Rajesh">Rajesh</option>
+              <option value="Naveen">Naveen</option>
+              <option value="Sowmiya">Sowmiya</option>
+            </TextField>
+             
+                
                 </Grid>
                 <Grid item xs={2} md={3}>
                   <MDTypography variant="h6" fontWeight="medium">
-                    QC Batch
+                    Status *
                   </MDTypography>
-                  <MDInput
+                  {/* <MDInput
                     type="number"
                     name="qc"
                     value={bill.jobs.qc}
@@ -587,13 +638,38 @@ function Report() {
                         jobs: { ...bill.jobs, qc: Number(e.target.value) },
                       })
                     }
-                  />
+                  /> */}
+                   {/* <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={ status1}
+                    onChange={handleStatusChange}
+                    sx={{ width: 200 }}
+                    renderInput={(params) => <TextField {...params} />}
+                  /> */}
+ <TextField
+              sx={{ width: 305, mt: 1, mr: 2 }}
+              select
+              fullWidth
+              name="status1"
+              value={bill.jobs.status1}
+              onChange={handleStatusChange}
+              variant="outlined"
+              InputLabelProps={{ shrink: true }}
+              SelectProps={{
+                native: true,
+              }}
+            >
+              <option value="">Select Status</option>
+              <option value="Active">Active</option>
+              <option value="Completed">Completed</option>
+            </TextField>
                 </Grid>
                 <Grid item xs={2} md={3}>
                   <MDTypography variant="h6" fontWeight="medium">
-                    Total
+                    End Date
                   </MDTypography>
-                  <MDInput
+                  {/* <MDInput
                     type="number"
                     name="total"
                     InputProps={{ readOnly: true }}
@@ -604,6 +680,14 @@ function Report() {
                         jobs: { ...bill.jobs, total: Number(e.target.value) },
                       })
                     }
+                  /> */}
+                    <MDInput
+                     disabled 
+
+                    type="date"
+                    name="cDate"
+                    value={bill.cDate}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={1} md={2}>

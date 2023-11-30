@@ -21,30 +21,35 @@ import {useParams} from 'react-router-dom';
 
 function Edit() {
   // const { columns, rows } = authorsTableData();
-  const [count, setCount] = useState({ aTotal: "", hTotal: "", jTotal: "" });
+  // const [count, setCount] = useState({ aTotal: "", hTotal: "", jTotal: "" });
+  const [count, setCount] = useState({ aTotal: "" });
   const [bill, setBill] = useState({
     tDate: '',
     team: "",
+    projectname: "",
     batch: "",
     associated: {
       annotation: 0,
       qc: 0,
       pmsme: 0,
     },
-    hours: {
-      annotation: 0,
-      qc: 0,
-      pmsme: 0,
-      projecttraning: 0,
-      ojt: 0,
-      qualityannotator: 0,
-      idelhours: 0,
-      other: 0,
-      comments: "",
-    },
+    // hours: {
+    //   annotation: 0,
+    //   qc: 0,
+    //   pmsme: 0,
+    //   projecttraning: 0,
+    //   ojt: 0,
+    //   qualityannotator: 0,
+    //   idelhours: 0,
+    //   other: 0,
+    //   comments: "",
+    // },
     jobs: {
-      annotation: 0,
-      qc: 0,
+      // annotation: 0,
+      // qc: 0,
+      managerTeam: "",
+      status1: "",
+      cDate: "",
     },
   });
   
@@ -52,10 +57,22 @@ function Edit() {
   const name = useSelector((state)=>state.auth.user.name)
 
   const [teamList, setTeamList] = useState(null);
-
+  const [managerTeamList, setManagerTeamList] = useState(null);
+  const [status, setStatus] = useState(null);
 
   const handleTeamChange = (event, value) => setBill({...bill,team:value});
+  const handleMangerTeamChange = (event, value) => setBill({ ...bill, jobs: { ...bill.jobs, managerTeam: value } });
+  const handleStatusChange = (event, value) => setBill({ ...bill, jobs: { ...bill.jobs, status1: value } });
 
+  // const handleMangerTeamChange = (event, value) => {
+  //   console.log("Selected Manager:", value);
+  //   setBill({ ...bill, jobs: { ...bill.jobs, managerTeam: value } });
+  // };
+  // const handleStatusChange = (event, value) => {
+  //   console.log("Selected Status:", value);
+  //   setBill({ ...bill, jobs: { ...bill.jobs, status1: value } });
+  // };
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -65,54 +82,52 @@ function Edit() {
       // team: teamList,
     });
   };
+  const handleCDateChange = (e) => {
+    const { name, value } = e.target;
 
+    setBill({
+      ...bill,
+      jobs: {
+        ...bill.jobs,
+        [name]: value,
+      },
+    });
+  };
  
   useEffect(() => {
     var assTotal =
       bill.associated.annotation + bill.associated.qc + bill.associated.pmsme;
-    var hourTotal =
-      bill.hours.annotation +
-      bill.hours.qc +
-      bill.hours.pmsme +
-      bill.hours.projecttraning +
-      bill.hours.ojt +
-      bill.hours.qualityannotator +
-      bill.hours.idelhours +
-      bill.hours.other;
-    var jobTotal = bill.jobs.annotation + bill.jobs.qc;
+    // var hourTotal =
+    //   bill.hours.annotation +
+    //   bill.hours.qc +
+    //   bill.hours.pmsme +
+    //   bill.hours.projecttraning +
+    //   bill.hours.ojt +
+    //   bill.hours.qualityannotator +
+    //   bill.hours.idelhours +
+    //   bill.hours.other;
+    // var jobTotal = bill.jobs.annotation + bill.jobs.qc;
     setCount({
       ...count,
       aTotal: assTotal,
-      hTotal: hourTotal,
-      jTotal: jobTotal,
+      // hTotal: hourTotal,
+      // jTotal: jobTotal,
     });
   }, [bill]);
   const list = [
-    "Dumbledore",
-    "Gandalf",
-    "Honeydew_Image Classification",
-    "Longon",
-    "Mango_Autonomy",
-    "Mango_Obstacles",
-    "Mango_Soybeans",
-    "Neo Segmentation",
-    "Pomelo",
-    "Rambutan_Traffic Light",
-    "Rambutan_Traffic Sign",
-    "Snorlax_Vehicle",
-    "Venusaur",
-    "LIME",
-    "SNOMED",
-    "RX-NORM",
-    "Receipt Labeling",
-    "My Heritage Project",
-    "Dragon",
-    "SKY FFV",
-    "NALA 3",
-    "Napa",
-    "Pinfo",
-    "SWDP",
+    "CV",
+    "NLP",
+    "CM",
   ];
+  // const managerTeam = [
+  //   "naveen",
+  //   "kavin",
+  //   "Rajesh",
+  // ];
+  // const status1 = [
+  //   "Active",
+  //   "Completed",
+  // ];
  const {id} = useParams()
  useEffect(() => {
     axios.get('/billing/'+id)
@@ -121,33 +136,36 @@ function Edit() {
         ...bill,
         tDate:moment(res.data.reportDate).format("YYYY-MM-DD"),
         team:res.data.team,
+        projectname:res.data.projectname,
         batch:res.data.batch,
         associated:{
             annotation:res.data.associated.annotation,
             qc:res.data.associated.qc,
             pmsme:res.data.associated.pm,
         },
-        hours:{
-            annotation:res.data.hours.annotation,
-            qc:res.data.hours.qc,
-            pmsme:res.data.hours.pm,
-            projecttraning:res.data.hours.training,
-            ojt:res.data.hours.ojt,
-            qualityannotator:res.data.hours.qcFeedback,
-            other:res.data.hours.other,
-            idelhours:res.data.hours.idle,
-            comments:res.data.hours.comments,
-          },
-          jobs:{
-            annotation:res.data.jobs.annotation,
-            qc:res.data.jobs.qc,
-          },
+        // hours:{
+        //     annotation:res.data.hours.annotation,
+        //     qc:res.data.hours.qc,
+        //     pmsme:res.data.hours.pm,
+        //     projecttraning:res.data.hours.training,
+        //     ojt:res.data.hours.ojt,
+        //     qualityannotator:res.data.hours.qcFeedback,
+        //     other:res.data.hours.other,
+        //     idelhours:res.data.hours.idle,
+        //     comments:res.data.hours.comments,
+        //   },
+        jobs: {
+          managerTeam: res.data.jobs.managerTeam,
+          status1: res.data.jobs.status1,
+          // eDate: res.data.jobs.eDate,
+          cDate:moment(res.data.jobs.cDate).format("YYYY-MM-DD"),
+        },
      })
      setCount({
       ...count,
         aTotal:res.data.associated.total,
-        hTotal:res.data.hours.total,
-        jTotal:res.data.jobs.total,
+        // hTotal:res.data.hours.total,
+        // jTotal:res.data.jobs.total,
      })
     })
      .catch(err=>console.error(err))
@@ -163,6 +181,7 @@ function Edit() {
       name:name,
       team:bill.team,
       empId:empId,
+      projectname:bill.projectname,
       batch:bill.batch,
       reportDate:bill.tDate,
       associated:{
@@ -171,22 +190,25 @@ function Edit() {
         pm:bill.associated.pmsme,
         total:count.aTotal,
       },
-      hours:{
-        annotation:bill.hours.annotation,
-        qc:bill.hours.qc,
-        pm:bill.hours.pmsme,
-        training:bill.hours.projecttraning,
-        ojt:bill.hours.ojt,
-        qcFeedback:bill.hours.qualityannotator,
-        other:bill.hours.other,
-        idle:bill.hours.idelhours,
-        total:count.hTotal,
-        comments:bill.hours.comments
-      },
+      // hours:{
+      //   annotation:bill.hours.annotation,
+      //   qc:bill.hours.qc,
+      //   pm:bill.hours.pmsme,
+      //   training:bill.hours.projecttraning,
+      //   ojt:bill.hours.ojt,
+      //   qcFeedback:bill.hours.qualityannotator,
+      //   other:bill.hours.other,
+      //   idle:bill.hours.idelhours,
+      //   total:count.hTotal,
+      //   comments:bill.hours.comments
+      // },
       jobs:{
-        annotation:bill.jobs.annotation,
-        qc:bill.jobs.qc,
-        total:count.jTotal
+        // annotation:bill.jobs.annotation,
+        // qc:bill.jobs.qc,
+        // total:count.jTotal
+        managerTeam:bill.jobs.managerTeam,
+        status1:bill.jobs.status1,
+        cDate: bill.jobs.cDate ,
       }
     }
     axios.post('/billing/update/'+id,billData)
@@ -248,6 +270,17 @@ function Edit() {
                     onChange={handleTeamChange}
                     sx={{ width: 200 }}
                     renderInput={(params) => <TextField {...params} />}
+                  />
+                </Grid>
+                <Grid item xs={2} md={3}>
+                  <MDTypography variant="h6" fontWeight="medium">
+                  Projectname
+                  </MDTypography>
+                  <MDInput
+                    type="text"
+                    name="Projectname"
+                    value={bill.projectname}
+                    onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid item xs={2} md={3}>
@@ -367,7 +400,7 @@ function Edit() {
                 </Grid>
               </Grid>
             </MDBox>
-            <MDBox
+            {/* <MDBox
               mx={2}
               // mt={-3}
               py={3}
@@ -568,7 +601,7 @@ function Edit() {
                   />
                 </Grid>
               </Grid>
-            </MDBox>
+            </MDBox> */}
             <MDBox
               mx={2}
               // mt={-3}
@@ -581,7 +614,7 @@ function Edit() {
               coloredShadow="info"
             >
               <MDTypography variant="h6" color="white">
-                Total Jobs Worked on
+              Assign To
               </MDTypography>
             </MDBox>
             <MDBox
@@ -594,9 +627,9 @@ function Edit() {
               <Grid container spacing={2}>
                 <Grid item xs={2} md={3}>
                   <MDTypography variant="h6" fontWeight="medium">
-                    Annotation Batch
+                  Project Manager *
                   </MDTypography>
-                  <MDInput
+                  {/* <MDInput
                     type="number"
                     name="annotation"
                     value={bill.jobs.annotation}
@@ -609,13 +642,43 @@ function Edit() {
                         },
                       })
                     }
-                  />
+                  /> */}
+               {/* <Autocomplete
+                      disablePortal
+                      id="combo-box-demo"
+                      options={managerTeam}
+                      isOptionEqualToValue={(manager, value) => manager === value}
+                      value={bill.jobs.managerTeam}  // <-- Corrected this line
+                      onChange={handleMangerTeamChange}
+                      sx={{ width: 200 }}
+                      renderInput={(params) => <TextField {...params} />}
+                   /> */}
+                             <TextField
+              sx={{ width: 305 }}
+              select
+              fullWidth
+              name="managerTeam"
+              value={bill.jobs.managerTeam}
+              onChange={handleMangerTeamChange}
+              variant="outlined"
+              InputLabelProps={{ shrink: true }}
+              SelectProps={{
+                native: true,
+              }}
+            >
+              <option value="">Select Manager</option>
+              <option value="Balamurugan">Balamurugan</option>
+              <option value="Rajesh">Rajesh</option>
+              <option value="Naveen">Naveen</option>
+              <option value="Sowmiya">Sowmiya</option>
+            </TextField>
+
                 </Grid>
                 <Grid item xs={2} md={3}>
                   <MDTypography variant="h6" fontWeight="medium">
-                    QC Batch
+                  Status *
                   </MDTypography>
-                  <MDInput
+                  {/* <MDInput
                     type="number"
                     name="qc"
                     value={bill.jobs.qc}
@@ -625,13 +688,41 @@ function Edit() {
                         jobs: { ...bill.jobs, qc: Number(e.target.value) },
                       })
                     }
-                  />
+                  /> */}
+                    {/* <Autocomplete
+                        disablePortal
+                        id="combo-box-demo"
+                        options={status1}
+                        isOptionEqualToValue={(status1, value) => status1 === value}
+                        value={bill.jobs.status1}  // <-- Corrected this line
+                        onChange={handleStatusChange}
+                        sx={{ width: 200 }}
+                        renderInput={(params) => <TextField {...params} />}
+                      /> */}
+                      <TextField
+              sx={{ width: 305, mt: 1, mr: 2 }}
+              select
+              fullWidth
+              name="status1"
+              value={bill.jobs.status1}
+              onChange={handleStatusChange}
+              variant="outlined"
+              InputLabelProps={{ shrink: true }}
+              SelectProps={{
+                native: true,
+              }}
+            >
+              <option value="">Select Status</option>
+              <option value="Active">Active</option>
+              <option value="Completed">Completed</option>
+            </TextField>
+
                 </Grid>
                 <Grid item xs={2} md={3}>
                   <MDTypography variant="h6" fontWeight="medium">
-                    Total
+                  End Date 
                   </MDTypography>
-                  <MDInput
+                  {/* <MDInput
                     type="number"
                     name="total"
                     InputProps={{ readOnly: true }}
@@ -642,6 +733,16 @@ function Edit() {
                         jobs: { ...bill.jobs, total: Number(e.target.value) },
                       })
                     }
+                  /> */}
+                    <MDInput
+                    // type="date"
+                    // name="cDate"
+                    // value={bill.jobs.cDate}
+                    // onChange={handleInputChange}
+                    type="date"
+        name="cDate"
+        value={bill.jobs.cDate}
+        onChange={handleCDateChange}
                   />
                 </Grid>
                 <Grid item xs={1} md={2}>
