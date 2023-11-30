@@ -15,22 +15,25 @@ const billingSchema = new Schema({
         pm: Number,
         total: Number
     },
-    hours:{
-        annotation: Number,
-        qc: Number,
-        pm: Number,
-        training: Number,
-        ojt: Number,
-        qcFeedback: Number,
-        other: Number,
-        idle: Number,
-        total: Number,
-        comments: String
-    },
+    // hours:{
+    //     annotation: Number,
+    //     qc: Number,
+    //     pm: Number,
+    //     training: Number,
+    //     ojt: Number,
+    //     qcFeedback: Number,
+    //     other: Number,
+    //     idle: Number,
+    //     total: Number,
+    //     comments: String
+    // },
     jobs:{
-        annotation: Number,
-        qc: Number,
-        total: Number
+        // annotation: Number,
+        managerTeam: String,
+        // qc: Number,
+        status1: String,
+        cDate: Date,
+        // total: Number
     }
 },{
     timestamps: true

@@ -41,19 +41,22 @@ const columns = [
   { id: "aqc", label: "QC", minWidth: 100 },
   { id: "apmsme", label: "PM + SME", minWidth: 100 },
   { id: "atotal", label: "Total", minWidth: 100 },
-  { id: "hannotation", label: "Annotation", minWidth: 100 },
-  { id: "hqc", label: "QC", minWidth: 100 },
-  { id: "hpmsme", label: "PM + SME", minWidth: 100 },
-  { id: "hprojectTraning", label: "Project Traning", minWidth: 100 },
-  { id: "hojt", label: "OJT", minWidth: 100 },
-  { id: "hqualityfeedback", label: "Quality Feedback", minWidth: 100 },
-  { id: "hidleHours", label: "Idle Hours", minWidth: 100 },
-  { id: "hother", label: "Other", minWidth: 100 },
-  { id: "hcomments", label: "Comments", minWidth: 100 },
-  { id: "htotal", label: "Total", minWidth: 100 },
-  { id: "jannotation", label: "Annotation", minWidth: 100 },
-  { id: "jqc", label: "QC", minWidth: 100 },
-  { id: "jtotal", label: "Total", minWidth: 100 },
+  // { id: "hannotation", label: "Annotation", minWidth: 100 },
+  // { id: "hqc", label: "QC", minWidth: 100 },
+  // { id: "hpmsme", label: "PM + SME", minWidth: 100 },
+  // { id: "hprojectTraning", label: "Project Traning", minWidth: 100 },
+  // { id: "hojt", label: "OJT", minWidth: 100 },
+  // { id: "hqualityfeedback", label: "Quality Feedback", minWidth: 100 },
+  // { id: "hidleHours", label: "Idle Hours", minWidth: 100 },
+  // { id: "hother", label: "Other", minWidth: 100 },
+  // { id: "hcomments", label: "Comments", minWidth: 100 },
+  // { id: "htotal", label: "Total", minWidth: 100 },
+  // { id: "jannotation", label: "Annotation", minWidth: 100 },
+  // { id: "jqc", label: "QC", minWidth: 100 },
+  // { id: "jtotal", label: "Total", minWidth: 100 },
+  { id: "jmanagerTeam", label: "Manager", minWidth: 100 },
+  { id: "jstatus1", label: "Status", minWidth: 100 },
+  { id: "jcDate", label: "EndDate", minWidth: 100 },
   { id: "action", label: "Action", minWidth: 150 },
   // { id: 'jtotal', label: 'Total', minWidth: 100, format: (value) => value.toLocaleString('en-US'), },
 ];
@@ -61,25 +64,28 @@ const columns = [
 function createData(
   date,
   team,
-  batch,
   projectname,
+  batch,
   aannotation,
   aqc,
   apmsme,
   atotal,
-  hannotation,
-  hqc,
-  hpmsme,
-  hprojectTraning,
-  hojt,
-  hqualityfeedback,
-  hidleHours,
-  hother,
-  hcomments,
-  htotal,
-  jannotation,
-  jqc,
-  jtotal
+  // hannotation,
+  // hqc,
+  // hpmsme,
+  // hprojectTraning,
+  // hojt,
+  // hqualityfeedback,
+  // hidleHours,
+  // hother,
+  // hcomments,
+  // htotal,
+  // jannotation,
+  // jqc,
+  // jtotal
+  jmanagerTeam,
+  jstatus1,
+  jcDate
 ) {
   //   const density = population / size;
   return {
@@ -91,19 +97,22 @@ function createData(
     aqc,
     apmsme,
     atotal,
-    hannotation,
-    hqc,
-    hpmsme,
-    hprojectTraning,
-    hojt,
-    hqualityfeedback,
-    hidleHours,
-    hother,
-    hcomments,
-    htotal,
-    jannotation,
-    jqc,
-    jtotal,
+    // hannotation,
+    // hqc,
+    // hpmsme,
+    // hprojectTraning,
+    // hojt,
+    // hqualityfeedback,
+    // hidleHours,
+    // hother,
+    // hcomments,
+    // htotal,
+    // jannotation,
+    // jqc,
+    // jtotal,
+    jmanagerTeam,
+    jstatus1,
+    jcDate,
   };
 }
 
@@ -120,23 +129,31 @@ const rows = [
     createData(
       item.reportDate,
       item.team,
-      item.batch,
       item.projectname,
+      item.batch,  
       item.associated.annotation,
       item.associated.qc,
       item.associated.pm,
       item.associated.total,
-      item.hours.annotation,
-      item.hours.qc,
-      item.hours.pm,
-      item.hours.training,
-      item.hours.otj,
-      item.hours.qcFeedback,
-      item.hours.other,
-      item.hours.total,
-      item.jobs.annotation,
-      item.jobs.qc,
-      item.jobs.total
+      item.jobs.managerTeam,
+      item.jobs.status1,
+      item.jobs.cDate,
+
+      // item.hours.annotation,
+      // item.hours.qc,
+      // item.hours.pm,
+      // item.hours.training,
+      // item.hours.otj,
+      // item.hours.qcFeedback,
+      // item.hours.other,
+      // item.hours.total,
+      // item.jobs.annotation,
+      // item.jobs.qc,
+      // item.jobs.total
+
+      // item.jobs.managerTeam,
+      // item.jobs.status1,
+      // item.jobs.cDate,
     );
   }),
 ];
@@ -154,25 +171,28 @@ export default function ColumnGroupingTable() {
   const headers = [
     {label:'Date',key:'reportDate'},
     {label:'Team',key:'team'},
-    {label:'Batch',key:'batch'},
     {label:'Projectname',key:'projectname'},
+    {label:'Batch',key:'batch'},
     {label:'Count of Associates | Annotation',key:'associated.annotation'},
     {label:'Count of Associates | QC',key:'associated.qc'},
     {label:'Count of Associates | PM+SME',key:'associated.pm'},
     {label:'Count of Associates | Total',key:'associated.total'},
-    {label:'Total Hours Spent | Annotation',key:'hours.annotation'},
-    {label:'Total Hours Spent | QC',key:'hours.qc'},
-    {label:'Total Hours Spent | PM+SME',key:'hours.pm'},
-    {label:'Total Hours Spent | Project Training',key:'hours.training'},
-    {label:'Total Hours Spent | OJT',key:'hours.ojt'},
-    {label:'Total Hours Spent | Quality Feedback',key:'hours.qcFeedback'},
-    {label:'Total Hours Spent | Other',key:'hours.other'},
-    {label:'Total Hours Spent | Idle Hours',key:'hours.idle'},
-    {label:'Total Hours Spent | Total',key:'hours.total'},
-    {label:'Total Hours Spent | Comments',key:'hours.comments'},
-    {label:'Total Jobs worked on | Annotation',key:'jobs.annotation'},
-    {label:'Total Jobs worked on | Qc',key:'jobs.qc'},
-    {label:'Total Jobs worked on | Total',key:'jobs.total'},
+    // {label:'Total Hours Spent | Annotation',key:'hours.annotation'},
+    // {label:'Total Hours Spent | QC',key:'hours.qc'},
+    // {label:'Total Hours Spent | PM+SME',key:'hours.pm'},
+    // {label:'Total Hours Spent | Project Training',key:'hours.training'},
+    // {label:'Total Hours Spent | OJT',key:'hours.ojt'},
+    // {label:'Total Hours Spent | Quality Feedback',key:'hours.qcFeedback'},
+    // {label:'Total Hours Spent | Other',key:'hours.other'},
+    // {label:'Total Hours Spent | Idle Hours',key:'hours.idle'},
+    // {label:'Total Hours Spent | Total',key:'hours.total'},
+    // {label:'Total Hours Spent | Comments',key:'hours.comments'},
+    // {label:'Total Jobs worked on | Annotation',key:'jobs.annotation'},
+    // {label:'Total Jobs worked on | Qc',key:'jobs.qc'},
+    // {label:'Total Jobs worked on | Total',key:'jobs.total'},
+    {label:'Total Jobs worked on | Manager',key:'jobs.managerTeam'},
+    {label:'Total Jobs worked on | Status',key:'jobs.status1'},
+    {label:'Total Jobs worked on | EndDate',key:'jobs.cDate'},
   ]
 
   const handleChangePage = (event, newPage) => {
@@ -181,18 +201,18 @@ export default function ColumnGroupingTable() {
 
   useEffect(()=>{
     var countTotal=0 
-    var hoursTotal =0
-    var jobTotal = 0
+    // var hoursTotal =0
+    // var jobTotal = 0
     data.map((item)=>{
       countTotal += item.associated.total
-      hoursTotal += item.hours.total
-      jobTotal += item.jobs.total
+      // hoursTotal += item.hours.total
+      // jobTotal += item.jobs.total
     })
     setTotal({
       ...total,
       countTotal: countTotal,
-      hoursTotal: hoursTotal,
-      jobTotal:jobTotal
+      // hoursTotal: hoursTotal,
+      // jobTotal:jobTotal
     })
   },[data])
 
@@ -276,30 +296,9 @@ export default function ColumnGroupingTable() {
 
   // Team List
   const list = [
-    "Dumbledore",
-    "Gandalf",
-    "Honeydew_Image Classification",
-    "Longon",
-    "Mango_Autonomy",
-    "Mango_Obstacles",
-    "Mango_Soybeans",
-    "Neo Segmentation",
-    "Pomelo",
-    "Rambutan_Traffic Light",
-    "Rambutan_Traffic Sign",
-    "Snorlax_Vehicle",
-    "Venusaur",
-    "LIME",
-    "SNOMED",
-    "RX-NORM",
-    "Receipt Labeling",
-    "My Heritage Project",
-    "Dragon",
-    "SKY FFV",
-    "NALA 3",
-    "Napa",
-    "Pinfo",
-    "SWDP",
+    "CV",
+    "NLP",
+    "CM",
   ];
   return (
     <DashboardLayout>
@@ -501,9 +500,9 @@ export default function ColumnGroupingTable() {
                   <TableCell align="center" bgcolor="#a7ffeb" colSpan={10}>
                     Total hours spent
                   </TableCell>
-                  <TableCell align="center" bgcolor="#ffe0b2" colSpan={4}>
+                  {/* <TableCell align="center" bgcolor="#ffe0b2" colSpan={4}>
                     Total jobs worked on
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
                 <TableRow>
                   {columns.map((column) => (
@@ -541,7 +540,10 @@ export default function ColumnGroupingTable() {
                         <TableCell>{item.associated.qc}</TableCell>
                         <TableCell>{item.associated.pm}</TableCell>
                         <TableCell>{item.associated.total}</TableCell>
-                        <TableCell>{item.hours.annotation}</TableCell>
+                        <TableCell>{item.jobs?.managerTeam}</TableCell>
+                        <TableCell>{item.jobs?.status1}</TableCell>
+                        <TableCell>  {moment(item.cDate).format("DD/MM/YYYY")}</TableCell>
+                        {/* <TableCell>{item.hours.annotation}</TableCell>
                         <TableCell>{item.hours.qc}</TableCell>
                         <TableCell>{item.hours.pm}</TableCell>
                         <TableCell>{item.hours.training}</TableCell>
@@ -553,7 +555,9 @@ export default function ColumnGroupingTable() {
                         <TableCell>{item.hours.total}</TableCell>
                         <TableCell>{item.jobs.annotation}</TableCell>
                         <TableCell>{item.jobs.qc}</TableCell>
-                        <TableCell>{item.jobs.total}</TableCell>
+                        <TableCell>{item.jobs.total}</TableCell> */}
+
+                         
                         <TableCell>
                           <Link to={"/billing-report/edit/" + item._id}>
                             <IconButton aria-label="edit">
