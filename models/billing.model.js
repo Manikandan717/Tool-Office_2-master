@@ -5,6 +5,7 @@ const Schema = mongoose.Schema
 const billingSchema = new Schema({
     name: String,
     team: String,
+    projectname: String,
     reportDate: Date,
     empId: String,
     batch: String,

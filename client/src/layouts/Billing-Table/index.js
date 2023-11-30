@@ -62,6 +62,7 @@ function createData(
   date,
   team,
   batch,
+  projectname,
   aannotation,
   aqc,
   apmsme,
@@ -85,6 +86,7 @@ function createData(
     date,
     team,
     batch,
+    projectname,
     aannotation,
     aqc,
     apmsme,
@@ -119,6 +121,7 @@ const rows = [
       item.reportDate,
       item.team,
       item.batch,
+      item.projectname,
       item.associated.annotation,
       item.associated.qc,
       item.associated.pm,
@@ -152,6 +155,7 @@ export default function ColumnGroupingTable() {
     {label:'Date',key:'reportDate'},
     {label:'Team',key:'team'},
     {label:'Batch',key:'batch'},
+    {label:'Projectname',key:'projectname'},
     {label:'Count of Associates | Annotation',key:'associated.annotation'},
     {label:'Count of Associates | QC',key:'associated.qc'},
     {label:'Count of Associates | PM+SME',key:'associated.pm'},
@@ -482,6 +486,15 @@ export default function ColumnGroupingTable() {
                   >
                     Batch
                   </TableCell>
+                  <TableCell
+                    align="center"
+                    // width="2 rem"
+                    // bgcolor="#E91E63"
+                  //  sx={{width:"2 rem"}}
+                    rowSpan={2}
+                  >
+                   Projectname
+                  </TableCell>
                   <TableCell align="center" bgcolor="#f3e5f5" colSpan={4}>
                     Count of associates
                   </TableCell>
@@ -523,6 +536,7 @@ export default function ColumnGroupingTable() {
                         </TableCell>
                         <TableCell>{item.team}</TableCell>
                         <TableCell>{item.batch}</TableCell>
+                        <TableCell>{item.projectname}</TableCell>
                         <TableCell>{item.associated.annotation}</TableCell>
                         <TableCell>{item.associated.qc}</TableCell>
                         <TableCell>{item.associated.pm}</TableCell>

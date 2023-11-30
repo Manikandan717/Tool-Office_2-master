@@ -25,6 +25,7 @@ function Report() {
     tDate: "",
     team: "",
     batch: "",
+    projectname: "",
     associated: {
       annotation: 0,
       qc: 0,
@@ -117,6 +118,7 @@ function Report() {
       empId:empId,
       batch:bill.batch,
       reportDate:bill.tDate,
+      projectname:bill.projectname,
       associated:{
         annotation:bill.associated.annotation,
         qc:bill.associated.qc,
@@ -207,6 +209,17 @@ function Report() {
                     type="text"
                     name="batch"
                     value={bill.batch}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+                <Grid item xs={2} md={3}>
+                  <MDTypography variant="h6" fontWeight="medium">
+                    Project Name
+                  </MDTypography>
+                  <MDInput
+                    type="text"
+                    name="projectname"
+                    value={bill.projectname}
                     onChange={handleInputChange}
                   />
                 </Grid>
