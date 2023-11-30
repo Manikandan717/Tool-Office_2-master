@@ -24,31 +24,31 @@ import Autocomplete from "@mui/material/Autocomplete";
 
 function Dashboard() {
   const [data, setData] = useState([]);
-  const [teamList, setTeamList] = useState(null);
   const [disable, setDisable] = useState(true);
   // const [seconds, setSeconds] = useState({ TotalTime: "", ActiveTime: "", EntityTime: "" });
   // const [timeData, setTimeData] = useState({ TotalTime: "", ActiveTime: "", EntityTime: "" });
   // const [count, setCount] = useState({ aTotal: "" });
+  const [teamList, setTeamList] = useState([]);
+  const [taskList, setTaskList] = useState([]);
+  const [projectNames, setProjectNames] = useState([]);
+  const [managers, setManagers] = useState([]);
   const name = useSelector((state) => state.auth.user.name);
   const empId = useSelector((state) => state.auth.user.empId);
   const initialValues = {
     team: "",
     projectName: "",
-    // departmentTask: "",
     task: "",
     managerTask: "",
     dateTask: "",
-    // dailyLog: ""
-
     sessionOne: 0,
     sessionTwo: 0,
     others: 0,
-    total: "",
-    comments: ""
+    comments: "",
 
   };
   const [values, setValues] = useState(initialValues);
   const handleTeamChange = (event, value) => setTeamList(value);
+  const handleTaskChange = (event, value) => setTaskList(value);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -57,6 +57,53 @@ function Dashboard() {
       [name]: value,
     });
   };
+
+ // Define getCurrentDate function
+ const getCurrentDate = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  let month = today.getMonth() + 1;
+  let day = today.getDate();
+
+  month = month < 10 ? `0${month}` : month;
+  day = day < 10 ? `0${day}` : day;
+
+  return `${year}-${month}-${day}`;
+};
+
+useEffect(() => {
+  axios.get("/billing/").then((response) => {
+    const projects = response.data.map((item) => item.projectname);
+    const managers = response.data.map((item) => item.jobs?.managerTeam).filter(Boolean);
+
+    setProjectNames(projects);
+    setManagers(managers);
+
+    // Add logic to check for 'Test2'
+    const isTest2Selected = values.projectName === 'Not assigned-CV' || values.projectName === 'Not assigned-NLP';
+
+    if (isTest2Selected) {
+      const currentDate = getCurrentDate();
+      const test2Manager = response.data.find((item) => item.projectname === 'Not assigned-CV' || values.projectName === 'Not assigned-NLP')?.jobs?.managerTeam;
+
+      setValues((prevValues) => ({
+        ...prevValues,
+        dateTask: currentDate,
+        managerTask: test2Manager || '',
+      }));
+    } else {
+      // Reset date and manager when another project name is selected
+      setValues((prevValues) => ({
+        ...prevValues,
+        dateTask: '',
+        managerTask: '',
+      }));
+    }
+  });
+}, [values.projectName, setValues]); // Now, this effect will run whenever values.projectName changes
+
+
+  
 
   // file handling         29/11/2023
   // const handlingFileUpload = (e) => {
@@ -114,8 +161,9 @@ function Dashboard() {
       name,
       empId,
       team: teamList,
+      task: taskList,
       projectName: values.projectName,
-      task: values.task,
+      // task: values.task,
       managerTask: values.managerTask,
       dateTask: values.dateTask,
       // dailyLog: values.dailyLog,
@@ -176,30 +224,19 @@ function Dashboard() {
 
 
   const list = [
-    "Dumbledore",
-    "Gandalf",
-    "Honeydew_Image Classification",
-    "Longon",
-    "Mango_Autonomy",
-    "Mango_Obstacles",
-    "Mango_Soybeans",
-    "Neo Segmentation",
-    "Pomelo",
-    "Rambutan_Traffic Light",
-    "Rambutan_Traffic Sign",
-    "Snorlax_Vehicle",
-    "Venusaur",
-    "LIME",
-    "SNOMED",
-    "RX-NORM",
-    "Receipt Labeling",
-    "My Heritage Project",
-    "Dragon",
-    "SKY FFV",
-    "NALA 3",
-    "Napa",
-    "Pinfo",
-    "SWDP",
+    "CV",
+    "NLP",
+    "CM",
+  ];
+
+  const tasklist = [
+    "Idle",
+    "Training",
+    "Production",
+    "QualityCheck",
+    "SpotQC",
+    "Guidelines",
+    "POC"
   ];
   return (
     <>
@@ -242,17 +279,48 @@ function Dashboard() {
                     />
                   </Grid>
                   <Grid item xs={2} md={3}>
-                    <MDTypography variant="h6" fontWeight="medium">
-                      Project Name
-                    </MDTypography>
-                    <MDInput
-                      type="text"
-                      name="projectName"
-                      value={values.projectName}
-                      onChange={handleInputChange}
-                    />
-                  </Grid>
-                  <Grid item xs={2} md={3}>
+                  <MDTypography variant="h6" fontWeight="medium">
+                    Select Project Name
+                  </MDTypography>
+                  <Autocomplete
+                    disablePortal
+                    id="project-name-autocomplete"
+                    options={projectNames}
+                    value={values.projectName}
+                    onChange={(event, newValue) => {
+                      setValues({
+                        ...values,
+                        projectName: newValue,
+                      });
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} />
+                    )}
+                  />
+                </Grid>
+                {/* <Grid item xs={2} md={3}>
+                  <MDTypography variant="h6" fontWeight="medium">
+                    Team
+                  </MDTypography>
+                  <Autocomplete
+                    disablePortal
+                    id="team-autocomplete"
+                    options={teamList}
+                    value={values.team}
+                    onChange={(event, newValue) => {
+                      setValues({
+                        ...values,
+                        team: newValue,
+                      });
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Team" />
+                    )}
+                  />
+                </Grid> */}
+
+                  {/* Second Row */}
+            <Grid item xs={2} md={3}>
                     <MDTypography variant="h6" fontWeight="medium">
                       Team
                     </MDTypography>
@@ -265,30 +333,36 @@ function Dashboard() {
                       renderInput={(params) => <TextField {...params} />}
                     />
                   </Grid>
-
-                  {/* Second Row */}
                   <Grid item xs={2} md={3}>
                     <MDTypography variant="h6" fontWeight="medium">
                       Task
                     </MDTypography>
-                    <MDInput
-                      type="text"
-                      name="task"
-                      value={values.task}
-                      onChange={handleInputChange}
+                    <Autocomplete
+                      disablePortal
+                      id="combo-box-demo"
+                      options={tasklist}
+                      onChange={handleTaskChange}
+                      sx={{ width: 200 }}
+                      renderInput={(params) => <TextField {...params} />}
                     />
                   </Grid>
                   <Grid item xs={2} md={3}>
-                    <MDTypography variant="h6" fontWeight="medium">
-                      Manager
-                    </MDTypography>
-                    <MDInput
-                      type="text"
-                      name="managerTask"
-                      value={values.managerTask}
-                      onChange={handleInputChange}
-                    />
-                  </Grid>
+                  <MDTypography variant="h6" fontWeight="medium">
+                  Select Manager
+                  </MDTypography>
+          <Autocomplete
+        id="manager-autocomplete"
+        options={managers}
+        value={values.managerTask}
+        onChange={(event, newValue) => {
+          setValues({
+            ...values,
+            managerTask: newValue,
+          });
+        }}
+        renderInput={(params) => <TextField {...params} />}
+      />
+                </Grid>
                 </Grid>
               </MDBox>
 

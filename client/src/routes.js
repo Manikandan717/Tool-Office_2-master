@@ -46,7 +46,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Billing Entry",
+    name: "Project Entry",
     key: "billing-report",
     icon: <Icon fontSize="small">create_new_folder</Icon>,
     route: "/billing-report",
@@ -70,7 +70,7 @@ const routes = [
   // },
   {
     type: "collapse",
-    name: "Billing Report",
+    name: "Project Report",
     key: "billing-Table",
     icon: <Icon fontSize="small">trending_up</Icon>,
     route: "/billing-Table",

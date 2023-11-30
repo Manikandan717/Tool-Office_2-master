@@ -603,7 +603,7 @@ function Report() {
                     renderInput={(params) => <TextField {...params} />}
                   /> */}
                     <TextField
-              sx={{ width: 305 }}
+              sx={{ width: 220 }}
               select
               fullWidth
               name="managerTeam"
@@ -648,7 +648,7 @@ function Report() {
                     renderInput={(params) => <TextField {...params} />}
                   /> */}
  <TextField
-              sx={{ width: 305, mt: 1, mr: 2 }}
+              sx={{ width: 220, mr: 2 }}
               select
               fullWidth
               name="status1"

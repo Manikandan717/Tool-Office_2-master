@@ -147,6 +147,14 @@ function AdminReport() {
       flex: 1,
     },
     {
+      field: "task",
+      headerName: "Task",
+      // type: 'number',
+      width: 150,
+      editable: false,
+      flex: 1,
+    },
+    {
       field: "managerTask",
       headerName: "Project Manager",
       // type: 'number',
@@ -226,31 +234,11 @@ function AdminReport() {
 
   // Team List
   const list = [
-    "Dumbledore",
-    "Gandalf",
-    "Honeydew_Image Classification",
-    "Longon",
-    "Mango_Autonomy",
-    "Mango_Obstacles",
-    "Mango_Soybeans",
-    "Neo Segmentation",
-    "Pomelo",
-    "Rambutan_Traffic Light",
-    "Rambutan_Traffic Sign",
-    "Snorlax_Vehicle",
-    "Venusaur",
-    "LIME",
-    "SNOMED",
-    "RX-NORM",
-    "Receipt Labeling",
-    "My Heritage Project",
-    "Dragon",
-    "SKY FFV",
-    "NALA 3",
-    "Napa",
-    "Pinfo",
-    "SWDP",
+    "CV",
+    "NLP",
+    "CM",
   ];
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
