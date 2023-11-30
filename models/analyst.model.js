@@ -10,9 +10,32 @@ const analystSchema = new Schema({
         required: true
       },
     empId: String,
-    TotalTime: Number,
-    ActiveTime: Number,
-    EntityTime: Number,
+ 
+      sessionOne: Number,
+      sessionTwo: Number,
+      others: Number,
+      comments: String,
+      total: Number,
+
+  projectName: {
+    type: String,
+    required: true
+  },
+  task: {
+    type: String,
+    required: true
+  },
+  managerTask: {
+    type: String,
+    required: true
+  },
+  dateTask: {
+    type: Date,
+    required: true
+  },
+    // TotalTime: Number,
+    // ActiveTime: Number,
+    // EntityTime: Number,
     week:{type: Number, default:()=>moment().format("W")},
     createdAt:{type:Date,default:()=>moment().format('M D YYYY')}
 })

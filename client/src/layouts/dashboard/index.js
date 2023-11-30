@@ -11,6 +11,7 @@ import MDTypography from "components/MDTypography";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import papa from "papaparse";
 import convert from "convert-seconds-to-human";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -25,12 +26,26 @@ function Dashboard() {
   const [data, setData] = useState([]);
   const [teamList, setTeamList] = useState(null);
   const [disable, setDisable] = useState(true);
-  const [seconds, setSeconds] = useState({ TotalTime: "", ActiveTime: "", EntityTime: "" });
-  const [timeData, setTimeData] = useState({ TotalTime: "", ActiveTime: "", EntityTime: "" });
+  // const [seconds, setSeconds] = useState({ TotalTime: "", ActiveTime: "", EntityTime: "" });
+  // const [timeData, setTimeData] = useState({ TotalTime: "", ActiveTime: "", EntityTime: "" });
+  // const [count, setCount] = useState({ aTotal: "" });
   const name = useSelector((state) => state.auth.user.name);
   const empId = useSelector((state) => state.auth.user.empId);
   const initialValues = {
     team: "",
+    projectName: "",
+    // departmentTask: "",
+    task: "",
+    managerTask: "",
+    dateTask: "",
+    // dailyLog: ""
+
+    sessionOne: 0,
+    sessionTwo: 0,
+    others: 0,
+    total: "",
+    comments: ""
+
   };
   const [values, setValues] = useState(initialValues);
   const handleTeamChange = (event, value) => setTeamList(value);
@@ -47,8 +62,8 @@ function Dashboard() {
   // const handlingFileUpload = (e) => {
   //   const { files } = e.target;
   //   setData([]);
-    // console.log(files);
-    // console.log(files[0]);
+  // console.log(files);
+  // console.log(files[0]);
   //   papa.parse(files[0], {
   //     header: true,
   //     column: true,
@@ -59,22 +74,38 @@ function Dashboard() {
   //   });
   //   disable?setDisable(!disable):null
   // };
-  
-  // file handling
-const handlingFileUpload = (e) => {
-  const { files } = e.target;
-  setData([]);
-  papa.parse(files[0], {
-    header: true,
-    column: true,
-    complete(results) {
-      setData((existing) => [...existing, ...results.data]);
-      return results.data;
-    },
-  });
-  setDisable(!disable); // Updated this line
-};
 
+  // file handling
+  // const handlingFileUpload = (e) => {
+  //   const { files } = e.target;
+  //   setData([]);
+  //   papa.parse(files[0], {
+  //     header: true,
+  //     column: true,
+  //     complete(results) {
+  //       setData((existing) => [...existing, ...results.data]);
+  //       return results.data;
+  //     },
+  //   });
+  //   setDisable(!disable); // Updated this line
+  // };
+
+  // useEffect(() => {
+  //   var assTotal =
+  //   values.sessionOne + values.sessionTwo + values.others;
+  //   setCount({
+  //     ...count,
+  //     aTotal: assTotal,
+  //   });
+  // }, [values]);
+  const calculateTotal = (values) => {
+    const sessionOne = parseInt(values.sessionOne, 10) || 0;
+    const sessionTwo = parseInt(values.sessionTwo, 10) || 0;
+    const others = parseInt(values.others, 10) || 0;
+
+    const total = sessionOne + sessionTwo + others;
+    return isNaN(total) ? '' : total;
+  };
 
   // Upload Data
   const handleSubmit = (e) => {
@@ -83,9 +114,20 @@ const handlingFileUpload = (e) => {
       name,
       empId,
       team: teamList,
-      TotalTime: timeData.TotalTime,
-      ActiveTime: timeData.ActiveTime,
-      EntityTime: timeData.EntityTime,
+      projectName: values.projectName,
+      task: values.task,
+      managerTask: values.managerTask,
+      dateTask: values.dateTask,
+      // dailyLog: values.dailyLog,
+      sessionOne: values.sessionOne,
+      sessionTwo: values.sessionTwo,
+      others: values.others,
+      comments: values.comments,
+      total: calculateTotal(values),
+
+      // TotalTime: timeData.TotalTime,
+      // ActiveTime: timeData.ActiveTime,
+      // EntityTime: timeData.EntityTime,
     };
 
     axios
@@ -96,41 +138,43 @@ const handlingFileUpload = (e) => {
     // console.log(userData);
   };
 
-  useEffect(() => {
-    let activeTime = 0;
-    let totalTime = 0;
-    let entityTime = 0;
-    data.map((item) => {
-      if (item.URL.match(/sagemaker\.aws\/#\/work\//gm) !== null) {
-        activeTime += Number(item["Active(sec)"]);
-      }
+  // useEffect(() => {
+  //   let activeTime = 0;
+  //   let totalTime = 0;
+  //   let entityTime = 0;
+  //   data.map((item) => {
+  //     if (item.URL.match(/sagemaker\.aws\/#\/work\//gm) !== null) {
+  //       activeTime += Number(item["Active(sec)"]);
+  //     }
 
-      if (item.URL.match(/inAll/gm) !== null) {
-        totalTime = Number(item["Active(sec)"]);
-      }
-      return null;
-    });
-    const active = convert(activeTime, "cal");
-    const total = convert(totalTime, "cal");
-    entityTime = totalTime - activeTime;
-    const entity = convert(entityTime, "cal");
-    // console.log(Object.keys(data).length);
-    // console.log(totalTime);
-    // console.log(activeTime);
-    // console.log(entityTime);
-    setSeconds({
-      TotalTime: total,
-      ActiveTime: active,
-      EntityTime: entity,
-    });
-    setTimeData({
-      TotalTime: totalTime,
-      ActiveTime: activeTime,
-      EntityTime: entityTime,
-    });
-    
-  }, [data]);
+  //     if (item.URL.match(/inAll/gm) !== null) {
+  //       totalTime = Number(item["Active(sec)"]);
+  //     }
+  //     return null;
+  //   });
+  //   const active = convert(activeTime, "cal");
+  //   const total = convert(totalTime, "cal");
+  //   entityTime = totalTime - activeTime;
+  //   const entity = convert(entityTime, "cal");
+  //   // console.log(Object.keys(data).length);
+  //   // console.log(totalTime);
+  //   // console.log(activeTime);
+  //   // console.log(entityTime);
+  //   setSeconds({
+  //     TotalTime: total,
+  //     ActiveTime: active,
+  //     EntityTime: entity,
+  //   });
+  //   setTimeData({
+  //     TotalTime: totalTime,
+  //     ActiveTime: activeTime,
+  //     EntityTime: entityTime,
+  //   });
+
+  // }, [data]);
   // Team List
+
+
   const list = [
     "Dumbledore",
     "Gandalf",
@@ -161,9 +205,191 @@ const handlingFileUpload = (e) => {
     <>
       <DashboardLayout>
         <DashboardNavbar />
-        <MDBox mt={3} mb={3}>
-          <Grid container spacing={3} justifyContent="center">
-            <Grid item xs={12} lg={11}>
+        <Grid item xs={12} mt={1} mb={40}>
+          <Card>
+            <MDBox pb={5} component="form" role="form" onSubmit={handleSubmit}>
+              <MDBox
+                mx={2}
+                py={3}
+                pt={3}
+                px={2}
+                variant="gradient"
+                bgColor="info"
+                borderRadius="lg"
+                coloredShadow="info"
+              >
+                <MDTypography variant="h6" color="white">
+                  Add Task
+                </MDTypography>
+              </MDBox>
+              <MDBox pb={5} pt={6} px={4} display="flex">
+                <Grid
+                  container
+                  spacing={3}
+                  // justifyContent="space-evenly"
+                  alignItems="center"
+                >
+                  {/* First Row */}
+                  <Grid item xs={2} md={3}>
+                    <MDTypography variant="h6" fontWeight="medium">
+                      Date
+                    </MDTypography>
+                    <MDInput
+                      type="date"
+                      name="dateTask"
+                      value={values.dateTask}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={2} md={3}>
+                    <MDTypography variant="h6" fontWeight="medium">
+                      Project Name
+                    </MDTypography>
+                    <MDInput
+                      type="text"
+                      name="projectName"
+                      value={values.projectName}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={2} md={3}>
+                    <MDTypography variant="h6" fontWeight="medium">
+                      Team
+                    </MDTypography>
+                    <Autocomplete
+                      disablePortal
+                      id="combo-box-demo"
+                      options={list}
+                      onChange={handleTeamChange}
+                      sx={{ width: 200 }}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </Grid>
+
+                  {/* Second Row */}
+                  <Grid item xs={2} md={3}>
+                    <MDTypography variant="h6" fontWeight="medium">
+                      Task
+                    </MDTypography>
+                    <MDInput
+                      type="text"
+                      name="task"
+                      value={values.task}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={2} md={3}>
+                    <MDTypography variant="h6" fontWeight="medium">
+                      Manager
+                    </MDTypography>
+                    <MDInput
+                      type="text"
+                      name="managerTask"
+                      value={values.managerTask}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                </Grid>
+              </MDBox>
+
+              <MDBox
+                mx={2}
+                // mt={-3}
+                py={3}
+                pt={3}
+                px={2}
+                variant="gradient"
+                bgColor="info"
+                borderRadius="lg"
+                coloredShadow="info"
+              >
+                <MDTypography variant="h6" color="white">
+                  Count of Associates
+                </MDTypography>
+              </MDBox>
+              <MDBox
+                pb={5}
+                pt={6}
+                px={4}
+                display="flex"
+                justifycontent="space-evenly"
+                alignItems="center"
+              >
+                <Grid container spacing={1}>
+                  <Grid item xs={2} md={3}>
+                    <MDTypography variant="h6" fontWeight="medium">
+                      Morning
+                    </MDTypography>
+                    <MDInput
+                      type="number"
+                      name="sessionOne"
+                      value={values.sessionOne}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={2} md={3}>
+                    <MDTypography variant="h6" fontWeight="medium">
+                      Afternoon
+                    </MDTypography>
+                    <MDInput
+                      type="number"
+                      name="sessionTwo"
+                      value={values.sessionTwo}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={2} md={3}>
+                    <MDTypography variant="h6" fontWeight="medium">
+                      Others
+                    </MDTypography>
+                    <MDInput
+                      type="number"
+                      name="others"
+                      value={values.others}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={2} md={3}>
+                    <MDTypography variant="h6" fontWeight="medium">
+                      Comments
+                    </MDTypography>
+                    <TextareaAutosize
+                      aria-label="minimum height"
+                      minRows={4}
+                      name="comments"
+                      value={values.comments}
+                      onChange={handleInputChange}
+                      // placeholder="Minimum 3 rows"
+                      style={{ width: 200 }}
+                    />
+                  </Grid>
+                  <Grid item xs={2} md={3}>
+                    <MDTypography variant="h6" fontWeight="medium">
+                      Total
+                    </MDTypography>
+                    <MDInput
+                      type="number"
+                      name="total"
+                      InputProps={{ readOnly: true }}
+                      value={calculateTotal(values)}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <MDBox
+                    pt={3}
+                    px={2}
+                    display="flex"
+                    justifyContent="end"
+                    alignItems="center"
+                  >
+                    <MDButton type="submit" color="success">
+                      Save
+                    </MDButton>
+                  </MDBox>
+                </Grid>
+
+              </MDBox>
+              {/* <Grid item xs={12} lg={11}>
               <MDBox py={6}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={6} lg={4}>
@@ -253,17 +479,7 @@ const handlingFileUpload = (e) => {
                               <input type="file" accept={".csv"} onChange={handlingFileUpload} />
                             </Grid>
                           </MDBox>
-                          <MDBox
-                            pt={3}
-                            px={2}
-                            display="flex"
-                            justifyContent="end"
-                            alignItems="center"
-                          >
-                            <MDButton type="submit" color="success" disabled={disable}>
-                              Upload!
-                            </MDButton>
-                          </MDBox>
+
                         </MDBox>
                       </Card>
                     </Grid>
@@ -317,7 +533,7 @@ const handlingFileUpload = (e) => {
                                   </p>
                                 </li>
                                 <br />
-                                <li> <p>In case of any issuse to reach us<b> team-developers@objectways.com</b></p>
+                                <li> <p>In case of any issuse to reach us<b> development@objectways.com</b></p>
                                   </li>
                               </ul>
                             </MDTypography>
@@ -329,9 +545,10 @@ const handlingFileUpload = (e) => {
                 </Grid>
               </MDBox>
               </MDBox>
-            </Grid>
-          </Grid>
-        </MDBox>
+            </Grid> */}
+            </MDBox>
+          </Card>
+        </Grid>
         <Footer />
       </DashboardLayout>
       <ToastContainer />

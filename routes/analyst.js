@@ -11,21 +11,30 @@ router.route('/').get((req,res)=>{
 
 //Add new Analyst Data
 
-router.route('/add').post((req,res)=>{
-    // const data = req.body
-    const name = req.body.name
-    const team = req.body.team
-    const empId = req.body.empId
-    const TotalTime = req.body.TotalTime
-    const ActiveTime = req.body.ActiveTime
-    const EntityTime = req.body.EntityTime
-    // const week = req.body.week
-    // const createdAt = req.body.createdAt
-    const newData = new Analyst({name,team,empId,TotalTime,ActiveTime,EntityTime})
+// router.route('/add').post((req,res)=>{
+//     // const data = req.body
+//     const name = req.body.name
+//     const team = req.body.team
+//     const empId = req.body.empId
+//     const projectName = req.body.projectName
+//     const managerTask = req.body.managerTask
+//     const dateTask = req.body.dateTask
+//     // const week = req.body.week
+//     // const createdAt = req.body.createdAt
+//     const newData = new Analyst({name,team,empId,TotalTime,ActiveTime,EntityTime})
 
+//     newData.save()
+//     .then(()=>res.json('Data Saved!!!'))
+//     .catch((err)=>res.status(400).json('Error:'+err))
+// })
+
+router.route('/add').post((req,res)=>{
+    const name = req.body
+    const newData = new Analyst(name)
+    console.log(name)
     newData.save()
     .then(()=>res.json('Data Saved!!!'))
-    .catch((err)=>res.status(400).json('Error:'+err))
+    .catch(err=>res.status(400).json('Error:'+err))
 })
 
 router.route('/fetch/src/:min/:max').get((req,res)=>{

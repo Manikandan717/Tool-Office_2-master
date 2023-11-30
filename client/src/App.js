@@ -99,7 +99,7 @@ function App() {
         <Route exact path="/authentication/forgotpwd" element={<Forgotpwd />} />
         {/* {getRoutes(routes)} */}
         <Route element={<Protected isValid={isLoggedIn}/>}>
-          <Route exact path="/dashboard" element={<Dashboard/>}/>
+          <Route exact path="/task" element={<Dashboard/>}/>
           <Route exact path="/profile" element={<Profile/>}/>
           {/* <Route exact path="/attendance" element={<Attendance/>}/> */}
         </Route>
@@ -115,7 +115,7 @@ function App() {
           <Route exact path="/create-team" element={<CreateTeam />} />
         </Route>
         {isLoggedIn ? (
-          <Route exact path="*" element={<Navigate to="/dashboard" />} />
+          <Route exact path="*" element={<Navigate to="/task" />} />
         ) : (
           <Route exact path="/" element={<Navigate to="/authentication/sign-in" />} />
         )}

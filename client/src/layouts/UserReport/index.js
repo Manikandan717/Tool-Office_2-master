@@ -64,13 +64,13 @@ function Report() {
 
   // tabel report
   const columns = [
-    { field: "id", headerName: "ID", width: 80},
+    { field: "id", headerName: "ID", width: 50 },
     {
       field: "name",
       headerName: "Name",
-      width: 150,
+      width: 200,
       editable: false,
-      flex: 1,
+      flex: 2,
     },
     {
       field: "team",
@@ -88,24 +88,56 @@ function Report() {
       flex: 1,
     },
     {
-      field: "TotalTime",
-      headerName: "Active Time",
+      field: "projectName",
+      headerName: "Project Name",
       // type: 'time',
       width: 150,
       editable: false,
       flex: 1,
     },
     {
-      field: "ActiveTime",
-      headerName: "Working Time",
+      field: "managerTask",
+      headerName: "Project Manager",
       // type: 'number',
       width: 150,
       editable: false,
       flex: 1,
     },
     {
-      field: "EntityTime",
-      headerName: "Entity Time",
+      field: "sessionOne",
+      headerName: "Hours in Session One",
+      // type: 'number',
+      width: 150,
+      editable: false,
+      flex: 1,
+    },
+    {
+      field: "sessionTwo",
+      headerName: "Hours in Session Two",
+      // type: 'number',
+      width: 150,
+      editable: false,
+      flex: 1,
+    },
+    {
+      field: "others",
+      headerName: "Hours in Session Others",
+      // type: 'number',
+      width: 150,
+      editable: false,
+      flex: 1,
+    },
+    {
+      field: "comments",
+      headerName: "Comments",
+      // type: 'number',
+      width: 150,
+      editable: false,
+      flex: 1,
+    },
+    {
+      field: "total",
+      headerName: "Count of Associates | Toltal Hours",
       // type: 'number',
       width: 150,
       editable: false,
@@ -120,16 +152,24 @@ function Report() {
         id: index + 1,
         name: item.name,
         team: item.team,
-        date: moment(item.createdAt).format("DD MM YYYY"),
-        TotalTime: moment
-          .utc(moment.duration(item.TotalTime, "seconds").as("milliseconds"))
-          .format("HH:mm:ss"),
-        ActiveTime: moment
-          .utc(moment.duration(item.ActiveTime, "seconds").as("milliseconds"))
-          .format("HH:mm:ss"),
-        EntityTime: moment
-          .utc(moment.duration(item.EntityTime, "seconds").as("milliseconds"))
-          .format("HH:mm:ss"),
+        date: moment(item.createdAt).format("DD-MM-YYYY"),
+        // TotalTime: moment
+        //   .utc(moment.duration(item.TotalTime, "seconds").as("milliseconds"))
+        //   .format("HH:mm:ss"),
+        // ActiveTime: moment
+        //   .utc(moment.duration(item.ActiveTime, "seconds").as("milliseconds"))
+        //   .format("HH:mm:ss"),
+        // EntityTime: moment
+        //   .utc(moment.duration(item.EntityTime, "seconds").as("milliseconds"))
+        //   .format("HH:mm:ss"),
+        projectName: item.projectName,
+        task: item.task,
+        managerTask: item.managerTask,
+        sessionOne: item.sessionOne,
+        sessionTwo: item.sessionTwo,
+        others: item.others,
+        comments: item.comments,
+        total: item.total,
       })),
     [report]
   );
