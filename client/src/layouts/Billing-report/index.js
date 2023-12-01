@@ -166,6 +166,7 @@ function Report() {
     }
     axios.post('/billing/new',billData)
     .then((res)=>toast.success(res.data))
+    .then(()=>window.location = '/project-report')
     .catch(err=>toast.error(err))
   // console.log(bill.tDate)
   };
