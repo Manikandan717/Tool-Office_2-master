@@ -276,6 +276,7 @@ useEffect(() => {
                       name="dateTask"
                       value={values.dateTask}
                       onChange={handleInputChange}
+                      sx={{ width: 200 }}
                     />
                   </Grid>
                   <Grid item xs={2} md={3}>
@@ -293,6 +294,7 @@ useEffect(() => {
                         projectName: newValue,
                       });
                     }}
+                    sx={{ width: 200 }}
                     renderInput={(params) => (
                       <TextField {...params} />
                     )}
@@ -360,6 +362,7 @@ useEffect(() => {
             managerTask: newValue,
           });
         }}
+        sx={{ width: 200 }}
         renderInput={(params) => <TextField {...params} />}
       />
                 </Grid>
