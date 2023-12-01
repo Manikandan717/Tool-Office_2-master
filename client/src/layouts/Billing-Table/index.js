@@ -440,10 +440,10 @@ export default function ColumnGroupingTable() {
                     Item
                   </TableCell> */}
                   <TableCell align="center"  bgcolor="#f3e5f5" colSpan={4}>
-                   Count of Associates Total : <b>{total.countTotal}</b>
+                  Total Count of Associates : <b>{total.countTotal}</b>
                   </TableCell>
                   <TableCell align="center" bgcolor="#a7ffeb"  colSpan={10}>
-                  Total Hours Total : <b>{total.hoursTotal}</b>
+                  Total Completed project : <b>{total.hoursTotal}</b>
                   </TableCell>
                   <TableCell align="center" bgcolor="#ffe0b2" colSpan={4}>
                   Jobs Total : <b>{total.jobTotal}</b>
@@ -495,10 +495,10 @@ export default function ColumnGroupingTable() {
                    Projectname
                   </TableCell>
                   <TableCell align="center" bgcolor="#f3e5f5" colSpan={4}>
-                    Count of associates
+                    Count of Associates
                   </TableCell>
                   <TableCell align="center" bgcolor="#a7ffeb" colSpan={10}>
-                    Total hours spent
+                    Total Project Status
                   </TableCell>
                   {/* <TableCell align="center" bgcolor="#ffe0b2" colSpan={4}>
                     Total jobs worked on
@@ -542,7 +542,7 @@ export default function ColumnGroupingTable() {
                         <TableCell>{item.associated.total}</TableCell>
                         <TableCell>{item.jobs?.managerTeam}</TableCell>
                         <TableCell>{item.jobs?.status1}</TableCell>
-                        <TableCell>  {moment(item.cDate).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell>  {moment(item.jobs?.cDate).format("DD/MM/YYYY")}</TableCell>
                         {/* <TableCell>{item.hours.annotation}</TableCell>
                         <TableCell>{item.hours.qc}</TableCell>
                         <TableCell>{item.hours.pm}</TableCell>

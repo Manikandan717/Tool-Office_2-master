@@ -206,6 +206,7 @@ function Report() {
                     name="tDate"
                     value={bill.tDate}
                     onChange={handleInputChange}
+                    required
                   />
                 </Grid>
                 {/* </Grid> */}
@@ -218,6 +219,7 @@ function Report() {
                     id="combo-box-demo"
                     options={list}
                     onChange={handleTeamChange}
+                    
                     sx={{ width: 200 }}
                     renderInput={(params) => <TextField {...params} />}
                   />
@@ -231,6 +233,7 @@ function Report() {
                     name="projectname"
                     value={bill.projectname}
                     onChange={handleInputChange}
+                    required
                   />
                 </Grid>
                 <Grid item xs={2} md={3}>
@@ -279,6 +282,7 @@ function Report() {
                     type="number"
                     name="annotation"
                     value={bill.associated.annotation}
+                    required
                     onChange={(e) =>
                       setBill({
                         ...bill,
@@ -298,6 +302,7 @@ function Report() {
                     type="number"
                     name="qc"
                     value={bill.associated.qc}
+                    required
                     onChange={(e) =>
                       setBill({
                         ...bill,
@@ -317,6 +322,7 @@ function Report() {
                     type="number"
                     name="pmsme"
                     value={bill.associated.pmsme}
+                    required
                     onChange={(e) =>
                       setBill({
                         ...bill,
@@ -608,6 +614,7 @@ function Report() {
               fullWidth
               name="managerTeam"
               value={bill.jobs.managerTeam}
+              required
               onChange={handleManagerTeamChange}
               variant="outlined"
               InputLabelProps={{ shrink: true }}
@@ -653,6 +660,7 @@ function Report() {
               fullWidth
               name="status1"
               value={bill.jobs.status1}
+              required
               onChange={handleStatusChange}
               variant="outlined"
               InputLabelProps={{ shrink: true }}

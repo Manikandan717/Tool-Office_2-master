@@ -94,6 +94,7 @@ function Edit() {
     });
   };
  
+  
   useEffect(() => {
     var assTotal =
       bill.associated.annotation + bill.associated.qc + bill.associated.pmsme;
@@ -653,25 +654,34 @@ function Edit() {
                       sx={{ width: 200 }}
                       renderInput={(params) => <TextField {...params} />}
                    /> */}
-                             <TextField
-              sx={{ width: 220 }}
-              select
-              fullWidth
-              name="managerTeam"
-              value={bill.jobs.managerTeam}
-              onChange={handleMangerTeamChange}
-              variant="outlined"
-              InputLabelProps={{ shrink: true }}
-              SelectProps={{
-                native: true,
-              }}
-            >
-              <option value="">Select Manager</option>
-              <option value="Balamurugan">Balamurugan</option>
-              <option value="Rajesh">Rajesh</option>
-              <option value="Naveen">Naveen</option>
-              <option value="Sowmiya">Sowmiya</option>
-            </TextField>
+                                <TextField
+                       sx={{ width: 220 }}
+                       select
+                       fullWidth
+                       name="managerTeam"
+                       value={bill.jobs.managerTeam}
+                       onChange={(e) =>
+                         setBill({
+                           ...bill,
+                           jobs: {
+                             ...bill.jobs,
+                             managerTeam: e.target.value,  
+                                   },
+                         })
+                       }
+                       variant="outlined"
+                       InputLabelProps={{ shrink: true }}
+                       SelectProps={{
+                         native: true,
+                       }}
+                     >
+                    <option value="">Select Manager</option>
+                    <option value="Balamurugan">Balamurugan</option>
+                    <option value="Rajesh">Rajesh</option>
+                    <option value="Naveen">Naveen</option>
+                    <option value="Sowmiya">Sowmiya</option>
+                  </TextField>
+
 
                 </Grid>
                 <Grid item xs={2} md={3}>
@@ -705,7 +715,15 @@ function Edit() {
               fullWidth
               name="status1"
               value={bill.jobs.status1}
-              onChange={handleStatusChange}
+              onChange={(e) =>
+                setBill({
+                  ...bill,
+                  jobs: {
+                    ...bill.jobs,
+                    status1: e.target.value,  
+                  },
+                })
+              }
               variant="outlined"
               InputLabelProps={{ shrink: true }}
               SelectProps={{
@@ -720,7 +738,7 @@ function Edit() {
                 </Grid>
                 <Grid item xs={2} md={3}>
                   <MDTypography variant="h6" fontWeight="medium">
-                  End Date 
+                  End Date *
                   </MDTypography>
                   {/* <MDInput
                     type="number"
@@ -735,14 +753,21 @@ function Edit() {
                     }
                   /> */}
                     <MDInput
-                    // type="date"
-                    // name="cDate"
-                    // value={bill.jobs.cDate}
-                    // onChange={handleInputChange}
                     type="date"
-        name="cDate"
-        value={bill.jobs.cDate}
-        onChange={handleCDateChange}
+                    name="cDate"
+                    // value={bill.jobs.cDate}
+                    value={bill.jobs.cDate}
+                    onChange={(e) =>
+                      setBill({
+                        ...bill,
+                        jobs: {
+                          ...bill.jobs,
+                          cDate: e.target.value,  
+                        },
+                      })
+                    }
+                    // onChange={handleInputChange}
+             
                   />
                 </Grid>
                 <Grid item xs={1} md={2}>
