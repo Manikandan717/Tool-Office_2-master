@@ -203,16 +203,31 @@ export default function ColumnGroupingTable() {
     var countTotal=0 
     // var hoursTotal =0
     // var jobTotal = 0
+    let activeCount = 0;
+    let completedCount = 0;
+    let  projectTotal =0;
+
     data.map((item)=>{
       countTotal += item.associated.total
+      // projectTotal += item.projectname
+      projectTotal += item.projectname ? 1 : 0;
       // hoursTotal += item.hours.total
       // jobTotal += item.jobs.total
-    })
+      if (item.jobs.status1 === "Active") {
+        activeCount++;
+      } else if (item.jobs.status1 === "Completed") {
+        completedCount++;
+      }
+    });
+    
     setTotal({
       ...total,
       countTotal: countTotal,
       // hoursTotal: hoursTotal,
       // jobTotal:jobTotal
+      activeCount,
+      completedCount,
+      projectTotal,
     })
   },[data])
 
@@ -440,13 +455,16 @@ export default function ColumnGroupingTable() {
                     Item
                   </TableCell> */}
                   <TableCell align="center"  bgcolor="#f3e5f5" colSpan={4}>
-                  Total Count of Associates : <b>{total.countTotal}</b>
+                  {/* Total Count of Associates : <b>{total.countTotal}</b> */}
+                   Active project : <b>{total.activeCount}</b>
                   </TableCell>
                   <TableCell align="center" bgcolor="#a7ffeb"  colSpan={10}>
-                  Total Completed project : <b>{total.hoursTotal}</b>
+                  {/* Total Completed project : <b>{total.hoursTotal}</b> */}
+                   Completed project : <b>{total.completedCount}</b>
                   </TableCell>
                   <TableCell align="center" bgcolor="#ffe0b2" colSpan={4}>
-                  Jobs Total : <b>{total.jobTotal}</b>
+                   {/* Total Project : <b>{total.jobTotal}</b> */}
+                   Total Project : <b>{total.projectTotal}</b>
                   </TableCell>
                   <TableCell align="center"  colSpan={4}>
                   <MDButton type="submit" color="info" >  <CSVLink data={data} filename={"Billing.csv"} headers={headers} >
@@ -559,7 +577,7 @@ export default function ColumnGroupingTable() {
 
                          
                         <TableCell>
-                          <Link to={"/billing-report/edit/" + item._id}>
+                          <Link to={"/project-entry/edit/" + item._id}>
                             <IconButton aria-label="edit">
                               <EditIcon />
                             </IconButton>{" "}
