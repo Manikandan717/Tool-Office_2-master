@@ -738,7 +738,7 @@ function Edit() {
                 </Grid>
                 <Grid item xs={2} md={3}>
                   <MDTypography variant="h6" fontWeight="medium">
-                  End Date 
+                  End Date *
                   </MDTypography>
                   {/* <MDInput
                     type="number"
