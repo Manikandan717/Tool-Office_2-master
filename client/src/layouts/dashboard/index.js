@@ -58,59 +58,59 @@ function Dashboard() {
     });
   };
 
- // Define getCurrentDate function
- const getCurrentDate = () => {
-  const today = new Date();
-  const year = today.getFullYear();
-  let month = today.getMonth() + 1;
-  let day = today.getDate();
+  // Define getCurrentDate function
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let day = today.getDate();
 
-  month = month < 10 ? `0${month}` : month;
-  day = day < 10 ? `0${day}` : day;
+    month = month < 10 ? `0${month}` : month;
+    day = day < 10 ? `0${day}` : day;
 
-  return `${year}-${month}-${day}`;
-};
+    return `${year}-${month}-${day}`;
+  };
 
-useEffect(() => {
-  axios.get("/billing/").then((response) => {
-    const projects = response.data.map((item) => item.projectname);
-    const managers = response.data.map((item) => item.jobs?.managerTeam).filter(Boolean);
+  useEffect(() => {
+    axios.get("/billing/").then((response) => {
+      const projects = response.data.map((item) => item.projectname);
+      const managers = response.data.map((item) => item.jobs?.managerTeam).filter(Boolean);
 
-    setProjectNames(projects);
-    setManagers(managers);
+      setProjectNames(projects);
+      setManagers(managers);
 
-    const currentDate = getCurrentDate();
+      const currentDate = getCurrentDate();
 
-    // Find the selected project in the response data
-    const selectedProject = response.data.find((item) => item.projectname === values.projectName);
+      // Find the selected project in the response data
+      const selectedProject = response.data.find((item) => item.projectname === values.projectName);
 
-    if (selectedProject) {
-      const projectManager = selectedProject.jobs?.managerTeam;
-      const projectTeam = selectedProject.team; // Assuming the team information is available in the API response
+      if (selectedProject) {
+        const projectManager = selectedProject.jobs?.managerTeam;
+        const projectTeam = selectedProject.team; // Assuming the team information is available in the API response
 
-      setValues((prevValues) => ({
-        ...prevValues,
-        dateTask: currentDate,
-        managerTask: projectManager || '',
-        team: projectTeam || '', // Set the team based on the selected project
-      }));
-    } else {
-      // Reset date, manager, and team when another project name is selected
-      setValues((prevValues) => ({
-        ...prevValues,
-        dateTask: '',
-        managerTask: '',
-        team: '', // Reset team value
-      }));
-    }
-  });
-}, [values.projectName]);
-
-
+        setValues((prevValues) => ({
+          ...prevValues,
+          dateTask: currentDate,
+          managerTask: projectManager || '',
+          team: projectTeam || '', // Set the team based on the selected project
+        }));
+      } else {
+        // Reset date, manager, and team when another project name is selected
+        setValues((prevValues) => ({
+          ...prevValues,
+          dateTask: '',
+          managerTask: '',
+          team: '', // Reset team value
+        }));
+      }
+    });
+  }, [values.projectName]);
 
 
 
-  
+
+
+
 
   // file handling         29/11/2023
   // const handlingFileUpload = (e) => {
@@ -287,27 +287,27 @@ useEffect(() => {
                     />
                   </Grid>
                   <Grid item xs={2} md={3}>
-                  <MDTypography variant="h6" fontWeight="medium">
-                    Select Project Name
-                  </MDTypography>
-                  <Autocomplete
-                    disablePortal
-                    id="project-name-autocomplete"
-                    options={projectNames}
-                    value={values.projectName}
-                    onChange={(event, newValue) => {
-                      setValues({
-                        ...values,
-                        projectName: newValue,
-                      });
-                    }}
-                    sx={{ width: 200 }}
-                    renderInput={(params) => (
-                      <TextField {...params} />
-                    )}
-                  />
-                </Grid>
-                {/* <Grid item xs={2} md={3}>
+                    <MDTypography variant="h6" fontWeight="medium">
+                      Select Project Name
+                    </MDTypography>
+                    <Autocomplete
+                      disablePortal
+                      id="project-name-autocomplete"
+                      options={projectNames}
+                      value={values.projectName}
+                      onChange={(event, newValue) => {
+                        setValues({
+                          ...values,
+                          projectName: newValue,
+                        });
+                      }}
+                      sx={{ width: 200 }}
+                      renderInput={(params) => (
+                        <TextField {...params} />
+                      )}
+                    />
+                  </Grid>
+                  {/* <Grid item xs={2} md={3}>
                   <MDTypography variant="h6" fontWeight="medium">
                     Team
                   </MDTypography>
@@ -329,7 +329,7 @@ useEffect(() => {
                 </Grid> */}
 
                   {/* Second Row */}
-            <Grid item xs={2} md={3}>
+                  <Grid item xs={2} md={3}>
                     <MDTypography variant="h6" fontWeight="medium">
                       Department
                     </MDTypography>
@@ -356,23 +356,23 @@ useEffect(() => {
                     />
                   </Grid>
                   <Grid item xs={2} md={3}>
-                  <MDTypography variant="h6" fontWeight="medium">
-                  Select Manager
-                  </MDTypography>
-          <Autocomplete
-        id="manager-autocomplete"
-        options={managers}
-        value={values.managerTask}
-        onChange={(event, newValue) => {
-          setValues({
-            ...values,
-            managerTask: newValue,
-          });
-        }}
-        sx={{ width: 200 }}
-        renderInput={(params) => <TextField {...params} />}
-      />
-                </Grid>
+                    <MDTypography variant="h6" fontWeight="medium">
+                      Select Manager
+                    </MDTypography>
+                    <Autocomplete
+                      id="manager-autocomplete"
+                      options={managers}
+                      value={values.managerTask}
+                      onChange={(event, newValue) => {
+                        setValues({
+                          ...values,
+                          managerTask: newValue,
+                        });
+                      }}
+                      sx={{ width: 200 }}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </Grid>
                 </Grid>
               </MDBox>
 
