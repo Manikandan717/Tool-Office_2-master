@@ -1,7 +1,7 @@
 
 # Objectways Tool Time Tracking
 
-This tool help to find the AWS time using external extension
+This tool help to find the Employee Daily Report
 
 
 ## Authors
