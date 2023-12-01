@@ -79,28 +79,35 @@ useEffect(() => {
     setProjectNames(projects);
     setManagers(managers);
 
-    // Add logic to check for 'Test2'
-    const isTest2Selected = values.projectName === 'Not assigned-CV' || values.projectName === 'Not assigned-NLP';
+    const currentDate = getCurrentDate();
 
-    if (isTest2Selected) {
-      const currentDate = getCurrentDate();
-      const test2Manager = response.data.find((item) => item.projectname === 'Not assigned-CV' || values.projectName === 'Not assigned-NLP')?.jobs?.managerTeam;
+    // Find the selected project in the response data
+    const selectedProject = response.data.find((item) => item.projectname === values.projectName);
+
+    if (selectedProject) {
+      const projectManager = selectedProject.jobs?.managerTeam;
+      const projectTeam = selectedProject.team; // Assuming the team information is available in the API response
 
       setValues((prevValues) => ({
         ...prevValues,
         dateTask: currentDate,
-        managerTask: test2Manager || '',
+        managerTask: projectManager || '',
+        team: projectTeam || '', // Set the team based on the selected project
       }));
     } else {
-      // Reset date and manager when another project name is selected
+      // Reset date, manager, and team when another project name is selected
       setValues((prevValues) => ({
         ...prevValues,
         dateTask: '',
         managerTask: '',
+        team: '', // Reset team value
       }));
     }
   });
-}, [values.projectName, setValues]); // Now, this effect will run whenever values.projectName changes
+}, [values.projectName]);
+
+
+
 
 
   
@@ -324,7 +331,7 @@ useEffect(() => {
                   {/* Second Row */}
             <Grid item xs={2} md={3}>
                     <MDTypography variant="h6" fontWeight="medium">
-                      Team
+                      Department
                     </MDTypography>
                     <Autocomplete
                       disablePortal
