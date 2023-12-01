@@ -542,7 +542,7 @@ export default function ColumnGroupingTable() {
                         <TableCell>{item.associated.total}</TableCell>
                         <TableCell>{item.jobs?.managerTeam}</TableCell>
                         <TableCell>{item.jobs?.status1}</TableCell>
-                        <TableCell>  {moment(item.cDate).format("DD/MM/YYYY")}</TableCell>
+                        <TableCell>  {moment(item.jobs?.cDate).format("DD/MM/YYYY")}</TableCell>
                         {/* <TableCell>{item.hours.annotation}</TableCell>
                         <TableCell>{item.hours.qc}</TableCell>
                         <TableCell>{item.hours.pm}</TableCell>
